@@ -1,0 +1,16 @@
+# Standards: 0.1
+---
+- name: Kill docker
+  command: killall Docker
+  register: docker_kill
+  failed_when: docker_kill.rc != 0 and "No matching processes belonging to you were found" not in docker_kill.stderr
+  become: "{{ (docker_user != ansible_user_id) | bool }}"
+  become_user: "{{ docker_user }}"
+
+- name: Start docker
+  when: docker_started
+  command: open -j /Applications/Docker.app
+  become: "{{ (docker_user != ansible_user_id) | bool }}"
+  become_user: "{{ docker_user }}"
+
+...
