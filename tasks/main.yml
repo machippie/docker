@@ -20,19 +20,12 @@
       tags:
         - docker
 
-    - name: Remove quarantine flag
-      register: docker_quarantine
-      failed_when: docker_quarantine.rc != 0 and "No such xattr" not in docker_quarantine.stderr
-      changed_when: docker_quarantine.rc == 0
-      command: xattr -d com.apple.quarantine /Applications/Docker.app
-      tags:
-        - docker
-
-    - name: Start background application
-      when: docker_started
-      changed_when: False
-      command: open -j /Applications/Docker.app
-      tags:
-        - docker
+- name: Remove quarantine flag
+  register: docker_quarantine
+  failed_when: docker_quarantine.rc != 0 and "No such xattr" not in docker_quarantine.stderr
+  changed_when: docker_quarantine.rc == 0
+  command: xattr -d com.apple.quarantine /Applications/Docker.app
+  tags:
+    - docker
 
 ...
